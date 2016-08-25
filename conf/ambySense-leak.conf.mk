@@ -139,7 +139,7 @@ LED_INV               = 0
 # Needed for high baud rates
 UART_PORT_NAME        = D
 UART_BAUD_RATE        = 115200
-UART_NUMBER           = 1
+UART_NUMBER           = 0
 UART_U2X              = no
 UART_RX_PUEN          = no
 UART_REMAP            = no
