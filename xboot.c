@@ -33,6 +33,8 @@
 
 #include "xboot.h"
 
+//#define DEBUG
+
 #ifdef USE_INTERRUPTS
 volatile unsigned char comm_mode;
 
@@ -58,6 +60,30 @@ unsigned char buffer[SPM_PAGESIZE];
 #ifdef NEED_CODE_PROTECTION
 unsigned char protected;
 #endif // NEED_CODE_PROTECTION
+
+#if defined(DEBUG)
+static void printHex(unsigned long n)
+{
+    unsigned char buf[8 * sizeof(long)]; // Assumes 8-bit chars.
+    unsigned long i = 0;
+
+    if (n == 0) {
+        send_char('0');
+        return;
+    }
+
+    while (n > 0) {
+        buf[i++] = n % 16;
+        n /= 16;
+    }
+
+    for (; i > 0; i--)
+        send_char(buf[i - 1] < 10 ?
+            '0' + buf[i - 1] :
+            'A' + buf[i - 1] - 10);
+}
+#endif
+
 
 // Main code
 int main(void)
@@ -309,7 +335,8 @@ int main(void)
         
 #ifndef __AVR_XMEGA__
         // ATMEGA must reset via watchdog, so turn it off
-        // MCUSR = 0;
+        EEPROM_write_byte(XB_MCUSR_ADDR, MCUSR); // Save MCUSR for application use
+        MCUSR = 0;                               // Must clear WDRF because it overrides the WDE control bit
         wdt_disable();
 #endif
         
@@ -918,7 +945,6 @@ autoneg_done:
         // Disable interrupts
         cli();
         #endif // NEED_INTERRUPTS
-        
         // Bootloader exit section
         // Code here runs after the bootloader has exited,
         // but before the application code has started

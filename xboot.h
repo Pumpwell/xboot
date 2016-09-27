@@ -55,6 +55,7 @@
 #endif // USE_CONFIG_H
 
 // Configuration
+#define XB_MCUSR_ADDR 4095UL
 
 // clock config
 #ifdef __AVR_XMEGA__

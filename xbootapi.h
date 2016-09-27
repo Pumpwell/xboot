@@ -82,6 +82,8 @@ extern "C"
 #define XB_APP_TEMP_SIZE XB_APP_SIZE
 #define XB_APP_TEMP_END (XB_APP_TEMP_START + XB_APP_TEMP_SIZE - 1UL)
 
+#define XB_MCUSR_ADDR 4095UL
+
 // status codes
 #define XB_SUCCESS 0
 #define XB_ERR_NO_API 1
